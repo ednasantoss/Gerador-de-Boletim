@@ -13,8 +13,6 @@ function gerarBoletim(event) {
         alert("O nome não pode conter números ou caracteres especiais!");
         return;
     }
-
-    calcularMedia();
 }
 
 
@@ -22,11 +20,11 @@ document.getElementById('form-boletim').addEventListener('submit', function (e) 
     e.preventDefault();
 
     let nome = document.getElementById('nome').value;
-    let n1 = parseFloat(document.getElementById('nota1').value);
-    let n2 = parseFloat(document.getElementById('nota2').value);
-    let n3 = parseFloat(document.getElementById('nota3').value);
+    let nota1 = parseFloat(document.getElementById('nota1').value);
+    let nota2 = parseFloat(document.getElementById('nota2').value);
+    let nota3 = parseFloat(document.getElementById('nota3').value);
 
-    let media = (n1 + n2 + n3) / 3;
+    let media = (nota1 + nota2 + nota3) / 3;
 
     document.getElementById('res-nome').innerText = nome;
     document.getElementById('res-media').innerText = media.toFixed(1);
@@ -43,31 +41,37 @@ function validarNota(nota) {
 
 function adicionarAluno() {
     const nome = document.getElementById("nome").value;
-    const n1 = parseFloat(document.getElementById("n1").value);
-    const n2 = parseFloat(document.getElementById("n2").value);
-    const n3 = parseFloat(document.getElementById("n3").value);
+    const nota1 = parseFloat(document.getElementById("nota1").value);
+    const nota2 = parseFloat(document.getElementById("nota2").value);
+    const nota3 = parseFloat(document.getElementById("nota3").value);
     const tabela = document.getElementById("tabela-alunos");
 
-    const novoAluno = { nome, n1, n2, n3, media, status };
+    const media = ((nota1 + nota2 + nota3) / 3).toFixed(1);
+    const status = media >= 7 ? "Aprovado" : "Reprovado";
+
+    const novoAluno = {
+        nome: nome,
+        nota1: nota1,
+        nota2: nota2,
+        nota3: nota3,
+        media: media,
+        status: status
+    };
     alunos.push(novoAluno);
 
     localStorage.setItem("alunos", JSON.stringify(alunos));
-
-    const media = ((n1 + n2 + n3) / 3).toFixed(1);
-    const status = media >= 7 ? "Aprovado" : "Reprovado";
-
-    const novaLinha = `
+    const aluno = `
         <tr>
             <td>${nome}</td>
-            <td>${n1}</td>
-            <td>${n2}</td>
-            <td>${n3}</td>
+            <td>${nota1}</td>
+            <td>${nota2}</td>
+            <td>${nota3}</td>
             <td>${media}</td>
             <td>${status}</td>
         </tr>
     `;
 
-    tabela.innerHTML += novaLinha;
+    tabela.innerHTML += aluno;
 
     document.getElementById('form-boletim').reset();
 }
